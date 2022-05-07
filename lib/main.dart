@@ -1,12 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:football_score/screens/home.dart';
+import 'package:football_score/screens/matches.dart';
+import 'package:football_score/screens/shop.dart';
 import 'package:football_score/utils/constants.dart';
 
 void main() {
-  runApp(const FootballHome());
+  runApp(FootballScore());
 }
 
-class FootballHome extends StatelessWidget {
-  const FootballHome({Key? key}) : super(key: key);
+class FootballScore extends StatefulWidget {
+
+  static const String id = "homepage";
+
+  @override
+  State<FootballScore> createState() => _FootballScoreState();
+}
+
+class _FootballScoreState extends State<FootballScore> {
+  int currentIndex=0;
+
+  List pages = [
+  FootballHome(),
+  MatchesScreen(),
+  ShopScreen(),
+  ];
+
+  void onTap(int index){
+    currentIndex = index;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,40 +38,38 @@ class FootballHome extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Color(appbarColor),
             title: Center(child: Text('Home')),
-            ),
-          body: ListView(
-            padding: EdgeInsets.all(16.0),
-            children: [
-              Container(
-                height: 50,
-                color: Colors.amber[600],
-                child: const Center(child: Text('Entry A')),
+          ),
+          body: pages[currentIndex],
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: currentIndex,
+            type: BottomNavigationBarType.fixed,
+            selectedFontSize: 20.0,
+            unselectedFontSize: 20.0,
+            onTap: (value){
+              setState(() {
+                if (value == 0) currentIndex = value;
+                if (value == 1) currentIndex = value;
+                if (value == 2) currentIndex = value;
+              });
+
+            },
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
               ),
-              Container(
-                height: 50,
-                color: Colors.amber[500],
-                child: const Center(child: Text('Entry B')),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.alternate_email),
+                label: 'Partite',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.web_outlined),
+                label: 'Shop',
               ),
             ],
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-                items: [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.alternate_email),
-                    label: 'Partite',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.web_outlined),
-                    label: 'Shop',
-                  ),
-                ],
-            unselectedItemColor: Colors.white,
-            selectedItemColor: Colors.red.shade800,
             backgroundColor: Color(appbarColor),
+            selectedItemColor: Colors.red.shade900,
+            unselectedItemColor: Colors.white,
           ),
         ),
       ),
